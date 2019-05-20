@@ -23,6 +23,8 @@ public class RouletteController : MonoBehaviour
             this.num1 = this.r_num1.Next(1000);
             this.num2 = this.r_num2.Next(1000);
             this.rotSpeed = num1 + num2;
+            // 音を鳴らす
+            GetComponent<AudioSource>().Play();
         }
 
         //回転速度分、ルーレットを回転させる
