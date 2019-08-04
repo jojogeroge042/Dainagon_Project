@@ -35,6 +35,7 @@ public class Player_Data : MonoBehaviour
     public static int[] Imprisonment = new int [11];
     public static int[,] Judge = new int[11, 11];
     public static int[] Init_Imprisonment = new int[11];
+    public static int[] Money = new int[11];
 }
 // -------------------------------------------------------------------------------------------
 
@@ -48,6 +49,11 @@ public class Result_Data : MonoBehaviour
 }
 // -------------------------------------------------------------------------------------------
 
+public class Temp_Data : MonoBehaviour
+{
+    public static int Ask_Player_Num = 0;
+}
+
 
 
 public class Scene_Manager : MonoBehaviour
@@ -56,6 +62,7 @@ public class Scene_Manager : MonoBehaviour
     InputField inputField_1;    // Maxラウンド数
     InputField inputField_2;    // 減刑
     InputField inputField_3;    // 増刑
+    InputField inputField_4;    // Ask_Player
     GameObject Player_Number;   // プレーヤ番号
     GameObject Round_Number;    // Round番号
     GameObject Imprisonment_Number; // 懲役
@@ -66,6 +73,8 @@ public class Scene_Manager : MonoBehaviour
     GameObject Disp_Player_2;
     GameObject Disp_Player_3;
     GameObject Disp_Player_4;
+    GameObject Disp_Money;
+    GameObject Ask_Init_Imprisonment_Number;
 
 
     // -------------------------------------------------------------------------------------------
@@ -78,6 +87,7 @@ public class Scene_Manager : MonoBehaviour
         int Disp_Max_Round_Num = Preset_Data.MAX_ROUND;
         int Disp_Imprisonment_Num = Player_Data.Imprisonment[Disp_Num - 1];
         int Disp_Init_Imprisonment_Num = Player_Data.Init_Imprisonment[Disp_Num - 1];
+        int Disp_Money_Num = Player_Data.Money[Disp_Num-1];
 
 
         this.Player_Number = GameObject.Find("Disp_Player_Num");
@@ -86,6 +96,7 @@ public class Scene_Manager : MonoBehaviour
         this.Imprisonment_Number = GameObject.Find("Disp_Imprisonment_Num");
         this.Init_Imprisonment_Number = GameObject.Find("Disp_Init_Imprisonment_Num");
         this.Win_Player = GameObject.Find("Win_Player");
+        this.Disp_Money = GameObject.Find("Disp_Money");
 
         // -------------------------------------------------------------------------------------------
         //  プレーヤー番号を更新する。
@@ -122,6 +133,14 @@ public class Scene_Manager : MonoBehaviour
         {
             this.Init_Imprisonment_Number.GetComponent<Text>().text = Disp_Init_Imprisonment_Num.ToString();
         }
+        // -------------------------------------------------------------------------------------------
+        //  所持金を更新する。
+        // -------------------------------------------------------------------------------------------
+        if (this.Disp_Money != null)
+        {
+            this.Disp_Money.GetComponent<Text>().text = Disp_Money_Num.ToString();
+        }
+
         // -------------------------------------------------------------------------------------------
         //  Win playerを更新する。
         // -------------------------------------------------------------------------------------------
@@ -208,6 +227,14 @@ public class Scene_Manager : MonoBehaviour
         this.inputField_3 = GameObject.Find("InputField_3").GetComponent<InputField>();
         Preset_Data.LEAK = int.Parse(inputField_3.text);
     }
+
+    public void Input_Ask_Player_Num()
+    {
+        this.inputField_4 = GameObject.Find("InputField_4").GetComponent<InputField>();
+        Temp_Data.Ask_Player_Num = int.Parse(inputField_4.text);
+    }
+
+
     // -------------------------------------------------------------------------------------------
 
 
@@ -219,8 +246,12 @@ public class Scene_Manager : MonoBehaviour
     {
         if (Config_Data.Round_Num == 0)
         {
+            // 初期懲役を入れる。
             Player_Data.Imprisonment[Config_Data.Player_Counter - 1] = Random.Range(50, 70);
+            //　初期懲役を記録する。
             Player_Data.Init_Imprisonment[Config_Data.Player_Counter - 1] = Player_Data.Imprisonment[Config_Data.Player_Counter - 1];
+            //　初期所持金を入れる。
+            Player_Data.Money[Config_Data.Player_Counter - 1] = 10;
             SceneManager.LoadScene("Player_Confirm");
         }
         else
@@ -247,11 +278,17 @@ public class Scene_Manager : MonoBehaviour
     // -------------------------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------------------------
+    // 所持金を加算する。
     // 人数分確認したか確認する。確認できていれば、Round０なら次のRound。
     //　Round０以外ならば、 Check_Judge()を呼び出す。
     // -------------------------------------------------------------------------------------------
     public void Player_Select_button()
     {
+
+        // 所持金を追加する。
+        Player_Data.Money[Config_Data.Player_Counter - 1] += 10;
+
+        // 全員終わったか確認する。
         Config_Data.Player_Counter++;
         if (Config_Data.Player_Counter <= Config_Data.Player_Num)
         {
@@ -359,6 +396,54 @@ public class Scene_Manager : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------------------------
+    // お金で減刑処理を行う。
+    // -------------------------------------------------------------------------------------------
+    public void Reduce_Imprisonment_By_Money()
+    {
+        this.Disp_Money = GameObject.Find("Disp_Money");
+
+        if (Player_Data.Money[Config_Data.Player_Counter - 1] >= 20)
+        {
+            Player_Data.Imprisonment[Config_Data.Player_Counter - 1] -= 10;
+            Player_Data.Money[Config_Data.Player_Counter - 1] -= 20;
+        }
+
+        //　所持金を更新
+        if (this.Disp_Money != null)
+        {
+            this.Disp_Money.GetComponent<Text>().text = Player_Data.Money[Config_Data.Player_Counter - 1].ToString();
+        }
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // お金で初期懲役を聞く。
+    // -------------------------------------------------------------------------------------------
+    public void Ask_Imprisonment_By_Money()
+    {
+        this.Ask_Init_Imprisonment_Number = GameObject.Find("Disp_Ask_Init_Imprisonment_Num");
+
+
+        if ((Temp_Data.Ask_Player_Num <= Config_Data.Player_Num) && (Temp_Data.Ask_Player_Num != 0))
+        {
+            if (Player_Data.Money[Config_Data.Player_Counter - 1] >= 20)
+            {
+                Player_Data.Money[Config_Data.Player_Counter - 1] -= 20;
+
+                if (this.Ask_Init_Imprisonment_Number != null)
+                {
+                    this.Ask_Init_Imprisonment_Number.GetComponent<Text>().text = Player_Data.Init_Imprisonment[Temp_Data.Ask_Player_Num - 1].ToString();
+                }
+
+            }
+        }
+
+        //　所持金を更新
+        if (this.Disp_Money != null)
+        {
+            this.Disp_Money.GetComponent<Text>().text = Player_Data.Money[Config_Data.Player_Counter - 1].ToString();
+        }
+    }
+    // -------------------------------------------------------------------------------------------
     // Result画面に移動する。 看守　Win
     // -------------------------------------------------------------------------------------------
     public void Result_Guard_Win()
@@ -420,6 +505,22 @@ public class Scene_Manager : MonoBehaviour
     public void Check_Player_button()
     {
         SceneManager.LoadScene("Check_Player");
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // Player Menu画面に移動する。
+    // -------------------------------------------------------------------------------------------
+    public void Return_Player_Menu_button()
+    {
+        SceneManager.LoadScene("Player_Menu");
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // Option 画面に移動する。
+    // -------------------------------------------------------------------------------------------
+    public void Option_button()
+    {
+        SceneManager.LoadScene("Option");
     }
     // -------------------------------------------------------------------------------------------
 
