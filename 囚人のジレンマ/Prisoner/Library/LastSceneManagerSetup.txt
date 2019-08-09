@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Option.unity
+- path: Assets/Prisoner.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

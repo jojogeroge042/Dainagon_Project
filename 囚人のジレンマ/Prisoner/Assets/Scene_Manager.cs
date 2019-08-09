@@ -9,10 +9,10 @@ using UnityEngine.UI;
 // -------------------------------------------------------------------------------------------
 public class Preset_Data : MonoBehaviour
 {
-    public static int LEAK = 255;
-    public static int SILENT = 255;
-    public static int MAX_ROUND = 255;
-    public static int INIT_ROUND = 255;
+    public static int LEAK = 0;
+    public static int SILENT = 0;
+    public static int MAX_ROUND = 0;
+    public static int INIT_ROUND = 0;
 }
 // -------------------------------------------------------------------------------------------
 
@@ -36,6 +36,7 @@ public class Player_Data : MonoBehaviour
     public static int[,] Judge = new int[11, 11];
     public static int[] Init_Imprisonment = new int[11];
     public static int[] Money = new int[11];
+    public static string[] Sin = new string[11];
 }
 // -------------------------------------------------------------------------------------------
 
@@ -49,10 +50,23 @@ public class Result_Data : MonoBehaviour
 }
 // -------------------------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------------------------
+//  Sin_Data
+// -------------------------------------------------------------------------------------------
+public class Sin_Data : MonoBehaviour
+{
+    public static string[] Sin = new string [] { "猥褻物頒布罪", "決闘罪", "猥褻物陳列罪", "殺人罪", "礼拝所不敬罪", "結婚目的略取・誘致罪","水道破壊罪", "私戦予備陰謀罪","婦女暴行罪", "詐欺罪" };
+}
+// -------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------
+//  グローバル変数
+// -------------------------------------------------------------------------------------------
 public class Temp_Data : MonoBehaviour
 {
     public static int Ask_Player_Num = 0;
 }
+// -------------------------------------------------------------------------------------------
 
 
 
@@ -68,13 +82,14 @@ public class Scene_Manager : MonoBehaviour
     GameObject Imprisonment_Number; // 懲役
     GameObject Init_Imprisonment_Number; // 初期懲役
     GameObject Max_Round_Number; // Max Round
-    GameObject Win_Player;
-    GameObject Disp_Player_1;
-    GameObject Disp_Player_2;
-    GameObject Disp_Player_3;
-    GameObject Disp_Player_4;
-    GameObject Disp_Money;
-    GameObject Ask_Init_Imprisonment_Number;
+    GameObject Win_Player;       // 勝者表示
+    GameObject Disp_Player_1;    // 結果表示
+    GameObject Disp_Player_2;   // 結果表示
+    GameObject Disp_Player_3;   // 結果表示
+    GameObject Disp_Player_4;   // 結果表示
+    GameObject Disp_Money;      // お金表示
+    GameObject Ask_Init_Imprisonment_Number;  // 相手初期懲役表示
+    GameObject Disp_Sin;        // 罪の表示
 
 
     // -------------------------------------------------------------------------------------------
@@ -97,6 +112,7 @@ public class Scene_Manager : MonoBehaviour
         this.Init_Imprisonment_Number = GameObject.Find("Disp_Init_Imprisonment_Num");
         this.Win_Player = GameObject.Find("Win_Player");
         this.Disp_Money = GameObject.Find("Disp_Money");
+        this.Disp_Sin = GameObject.Find("Disp_Sin");
 
         // -------------------------------------------------------------------------------------------
         //  プレーヤー番号を更新する。
@@ -139,6 +155,14 @@ public class Scene_Manager : MonoBehaviour
         if (this.Disp_Money != null)
         {
             this.Disp_Money.GetComponent<Text>().text = Disp_Money_Num.ToString();
+        }
+
+        // -------------------------------------------------------------------------------------------
+        //  罪を更新する。
+        // -------------------------------------------------------------------------------------------
+        if (this.Disp_Sin != null)
+        {
+            this.Disp_Sin.GetComponent<Text>().text = "あなたは"+ Player_Data.Sin[Config_Data.Player_Counter - 1] + "で逮捕されました。";
         }
 
         // -------------------------------------------------------------------------------------------
@@ -248,10 +272,13 @@ public class Scene_Manager : MonoBehaviour
         {
             // 初期懲役を入れる。
             Player_Data.Imprisonment[Config_Data.Player_Counter - 1] = Random.Range(50, 70);
-            //　初期懲役を記録する。
+            // 初期懲役を記録する。
             Player_Data.Init_Imprisonment[Config_Data.Player_Counter - 1] = Player_Data.Imprisonment[Config_Data.Player_Counter - 1];
-            //　初期所持金を入れる。
+            // 初期所持金を入れる。
             Player_Data.Money[Config_Data.Player_Counter - 1] = 10;
+            // 罪の確定
+            Player_Data.Sin[Config_Data.Player_Counter - 1] = Sin_Data.Sin[Random.Range(0, 9)];
+
             SceneManager.LoadScene("Player_Confirm");
         }
         else
@@ -477,6 +504,7 @@ public class Scene_Manager : MonoBehaviour
     // -------------------------------------------------------------------------------------------
     public void Config_button()
     {
+        All_Init();
         SceneManager.LoadScene("Config");
     }
     // -------------------------------------------------------------------------------------------
@@ -524,6 +552,36 @@ public class Scene_Manager : MonoBehaviour
     }
     // -------------------------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------------------------
+    // すべての変数の初期化を行う。
+    // -------------------------------------------------------------------------------------------
+    public void All_Init()
+    {
+        Preset_Data.LEAK = 0;
+        Preset_Data.SILENT = 0;
+        Preset_Data.MAX_ROUND = 0;
+        Preset_Data.INIT_ROUND = 0;
 
+        Config_Data.Player_Num = 0;
+        Config_Data.Player_Counter = 1;
+        Config_Data.Round_Num = 0;
+
+        for (int i = 0; i < 11; i++)
+        {
+            Player_Data.Imprisonment[i] = 0;
+            Player_Data.Init_Imprisonment[i] = 0;
+            Player_Data.Money[i] = 0;
+            for (int n = 0; n < 10; n++)
+            {
+                Player_Data.Judge[i, n] = 0;
+            }
+        }
+
+        Result_Data.Result_Flag = 0;
+        Result_Data.Win_Player_Num = 0;
+
+        Temp_Data.Ask_Player_Num = 0;
+    }
+    // -------------------------------------------------------------------------------------------
 
 }
