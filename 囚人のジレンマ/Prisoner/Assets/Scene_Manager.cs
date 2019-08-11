@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+// -------------------------------------------------------------------------------------------
+//  Define Data
+// -------------------------------------------------------------------------------------------
+public class Define_Data : MonoBehaviour
+{
+    public const bool ALIVE = true;
+    public const bool DETH = false;
+}
+
+
 // -------------------------------------------------------------------------------------------
 //  Preset Data
 // -------------------------------------------------------------------------------------------
@@ -37,6 +48,7 @@ public class Player_Data : MonoBehaviour
     public static int[] Init_Imprisonment = new int[11];
     public static int[] Money = new int[11];
     public static string[] Sin = new string[11];
+    public static bool[] Status = new bool[11];
 }
 // -------------------------------------------------------------------------------------------
 
@@ -65,6 +77,8 @@ public class Sin_Data : MonoBehaviour
 public class Temp_Data : MonoBehaviour
 {
     public static int Ask_Player_Num = 0;
+    public static int Attack_Player_Num = 0;
+    public static string Round_Text = "刑務の時間です。\n昨晩は皆、勤勉に働き\n平和な時間が過ぎました。";
 }
 // -------------------------------------------------------------------------------------------
 
@@ -77,6 +91,7 @@ public class Scene_Manager : MonoBehaviour
     InputField inputField_2;    // 減刑
     InputField inputField_3;    // 増刑
     InputField inputField_4;    // Ask_Player
+    InputField inputField_5;    // Attack_Player
     GameObject Player_Number;   // プレーヤ番号
     GameObject Round_Number;    // Round番号
     GameObject Imprisonment_Number; // 懲役
@@ -90,6 +105,8 @@ public class Scene_Manager : MonoBehaviour
     GameObject Disp_Money;      // お金表示
     GameObject Ask_Init_Imprisonment_Number;  // 相手初期懲役表示
     GameObject Disp_Sin;        // 罪の表示
+    GameObject Disp_Round_Text;        // ラウンド時の文章表示
+    GameObject Disp_Deth_Message;
 
 
     // -------------------------------------------------------------------------------------------
@@ -113,6 +130,8 @@ public class Scene_Manager : MonoBehaviour
         this.Win_Player = GameObject.Find("Win_Player");
         this.Disp_Money = GameObject.Find("Disp_Money");
         this.Disp_Sin = GameObject.Find("Disp_Sin");
+        this.Disp_Round_Text = GameObject.Find("Disp_Round_Text");
+        this.Disp_Deth_Message = GameObject.Find("Deth_Message");
 
         // -------------------------------------------------------------------------------------------
         //  プレーヤー番号を更新する。
@@ -164,6 +183,31 @@ public class Scene_Manager : MonoBehaviour
         {
             this.Disp_Sin.GetComponent<Text>().text = "あなたは"+ Player_Data.Sin[Config_Data.Player_Counter - 1] + "で逮捕されました。";
         }
+
+        // -------------------------------------------------------------------------------------------
+        //  Round Textを更新する。
+        // -------------------------------------------------------------------------------------------
+        if (this.Disp_Round_Text != null)
+        {
+            this.Disp_Round_Text.GetComponent<Text>().text = Temp_Data.Round_Text;
+        }
+
+        // -------------------------------------------------------------------------------------------
+        //  Deth Message を更新する。
+        // -------------------------------------------------------------------------------------------
+        if (this.Disp_Deth_Message != null)
+        {
+            if (Player_Data.Status[Config_Data.Player_Counter - 1] == Define_Data.ALIVE)
+            {
+                this.Disp_Deth_Message.GetComponent<Text>().text = "生きてます。";
+            }
+            else
+            {
+                this.Disp_Deth_Message.GetComponent<Text>().text = "不慮の事故に会い、入院しました。\n以後、密告を押しても黙秘として扱われます。";
+            }
+
+        }
+
 
         // -------------------------------------------------------------------------------------------
         //  Win playerを更新する。
@@ -258,6 +302,12 @@ public class Scene_Manager : MonoBehaviour
         Temp_Data.Ask_Player_Num = int.Parse(inputField_4.text);
     }
 
+    public void Input_Attack_Player_Num()
+    {
+        this.inputField_5 = GameObject.Find("InputField_5").GetComponent<InputField>();
+        Temp_Data.Attack_Player_Num = int.Parse(inputField_5.text);
+    }
+
 
     // -------------------------------------------------------------------------------------------
 
@@ -293,7 +343,14 @@ public class Scene_Manager : MonoBehaviour
     // -------------------------------------------------------------------------------------------
     public void Player_Select_button_Leak()
     {
-        Player_Data.Judge[Config_Data.Round_Num, (Config_Data.Player_Counter - 1)] = 1;
+        if (Player_Data.Status[Config_Data.Player_Counter - 1] == Define_Data.ALIVE)
+        {
+            Player_Data.Judge[Config_Data.Round_Num, (Config_Data.Player_Counter - 1)] = 1;
+        }
+        else
+        {
+            Player_Data.Judge[Config_Data.Round_Num, (Config_Data.Player_Counter - 1)] = 0;
+        }
         Player_Select_button();
     }
 
@@ -362,10 +419,12 @@ public class Scene_Manager : MonoBehaviour
             // 全員黙秘
             else if (Sum == 0)
             {
+                Temp_Data.Round_Text = "刑務の時間です。\n昨晩は皆、勤勉に働き\n平和な時間が過ぎました。";
                 Reduce_Imprisonment();
             }
             else // 誰かが密告
             {
+                Temp_Data.Round_Text = "刑務の時間です。\n昨晩、誰かが看守と裏取引をしていたという噂が流れています。";
                 Add_Imprisonment();
             }
         }
@@ -500,6 +559,35 @@ public class Scene_Manager : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------------------------
+    // Check Before Judge
+    // -------------------------------------------------------------------------------------------
+    public void Check_Before_Judge()
+    {
+        Debug.Log(Config_Data.Round_Num - 1);
+
+        if ((Temp_Data.Attack_Player_Num <= Config_Data.Player_Num) && (Temp_Data.Attack_Player_Num != 0))
+        {
+            if (Player_Data.Money[Config_Data.Player_Counter - 1] >= 20)
+            {
+                Player_Data.Money[Config_Data.Player_Counter - 1] -= 20;
+
+                if ( Player_Data.Judge[Temp_Data.Attack_Player_Num - 1,Config_Data.Round_Num -1] == 1)
+                {
+                    Player_Data.Status[Temp_Data.Attack_Player_Num - 1] = Define_Data.DETH;
+                }
+
+            }
+        }
+
+        //　所持金を更新
+        if (this.Disp_Money != null)
+        {
+            this.Disp_Money.GetComponent<Text>().text = Player_Data.Money[Config_Data.Player_Counter - 1].ToString();
+        }
+
+    }
+
+    // -------------------------------------------------------------------------------------------
     // Config画面に移動する。
     // -------------------------------------------------------------------------------------------
     public void Config_button()
@@ -571,6 +659,7 @@ public class Scene_Manager : MonoBehaviour
             Player_Data.Imprisonment[i] = 0;
             Player_Data.Init_Imprisonment[i] = 0;
             Player_Data.Money[i] = 0;
+            Player_Data.Status[i] = Define_Data.ALIVE;
             for (int n = 0; n < 10; n++)
             {
                 Player_Data.Judge[i, n] = 0;
