@@ -26,14 +26,20 @@ public class B_10_Controll : MonoBehaviour
         //　自操作時、敵キューブと衝突したとき
         if ((Cube_Status.Status_B_10 == true) && (other.gameObject.tag == "Red_Cube"))
         {
+          if(Game_Status.Kill == false)
+          {
             // 敵キューブが二段積ではない場合。
             if (other.gameObject.transform.localScale.y < 0.5f)
             {
                 Debug.Log("Hit_R_1");
                 // 相手キューブを削除
                 Destroy(other.gameObject);
+                // キルステータスを更新
+                Game_Status.Kill = true;
                 // 自キューブのステータスをアイドルにする。
                 Cube_Status.Status_B_10 = false;
+                // 奇数偶数ステータスをfalseにする
+                Cube_Status.OddEven_Cube[Define.B_10] = false;
                 // エフェクトを切る
                 GetComponent<ParticleSystem>().Stop();
             }
@@ -46,7 +52,7 @@ public class B_10_Controll : MonoBehaviour
                     Vector3 Vec = new Vector3(other.gameObject.transform.position.x + 1, 0f, other.gameObject.transform.position.z);
                     bool Check_Value = false;
                     int i = 0;
-                    
+                    // 後ろに駒があるかチェック
                     for (i = 0; i < 22; i++)
                     {
                       if (Vec == Cube_Location.Cube_Loc[i])
@@ -59,8 +65,12 @@ public class B_10_Controll : MonoBehaviour
                     {
                       // 相手キューブを削除
                       Destroy(other.gameObject);
+                      // キルステータスを更新
+                      Game_Status.Kill = true;
                       // 自キューブのステータスをアイドルにする。
                       Cube_Status.Status_B_10 = false;
+                      // 奇数偶数ステータスをfalseにする
+                      Cube_Status.OddEven_Cube[Define.B_10] = false;
                       // エフェクトを切る
                       GetComponent<ParticleSystem>().Stop();
                     }
@@ -70,8 +80,12 @@ public class B_10_Controll : MonoBehaviour
                        other.gameObject.transform.position = new Vector3(other.gameObject.transform.position.x + 1, 0f, other.gameObject.transform.position.z);
                        // 敵キューブのサイズをもとに戻す
                        other.gameObject.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                       // キルステータスを更新
+                       Game_Status.Kill = true;
                        // 自キューブのステータスをアイドルにする。
                        Cube_Status.Status_B_10 = false;
+                      // 奇数偶数ステータスをfalseにする
+                      Cube_Status.OddEven_Cube[Define.B_10] = false;
                        // エフェクトを切る
                        GetComponent<ParticleSystem>().Stop();
                     }
@@ -80,12 +94,27 @@ public class B_10_Controll : MonoBehaviour
                 {
                     // 相手キューブを削除
                     Destroy(other.gameObject);
+                    // キルステータスを更新
+                    Game_Status.Kill = true;
                     // 自キューブのステータスをアイドルにする。
                     Cube_Status.Status_B_10 = false;
+                    // 奇数偶数ステータスをfalseにする
+                    Cube_Status.OddEven_Cube[Define.B_10] = false;
                     // エフェクトを切る
                     GetComponent<ParticleSystem>().Stop();
-                }
+                } // End of 最奥チェック
+            } // End of 2段積みの場合
+          }
+          else
+          {
+            // 元の位置に戻す
+            transform.position = B_10_BU.vector3;
+            if (Dice_Status.Count == 0)
+            {
+              GetComponent<ParticleSystem>().Play();
             }
+            Dice_Status.Count += 1;
+          }
         }
         // 味方キューブの場合
         else if ((Cube_Status.Status_B_10 == true) && (other.gameObject.tag == "Blue_Cube"))
@@ -103,6 +132,8 @@ public class B_10_Controll : MonoBehaviour
                     this.transform.localScale = new Vector3(0.25f, 0.5f, 0.25f);
                     // 自キューブのステータスをアイドルにする。
                     Cube_Status.Status_B_10 = false;
+                    // 奇数偶数ステータスをfalseにする
+                    Cube_Status.OddEven_Cube[Define.B_10] = false;
                     // エフェクトを切る
                     GetComponent<ParticleSystem>().Stop();
                 }
@@ -155,6 +186,7 @@ public class B_10_Controll : MonoBehaviour
                     {
                         B_10_BU.vector3 = transform.position;
                         transform.position = new Vector3(x, 0, z);
+                        GetComponent<AudioSource>().Play();
                         Dice_Status.Count -= 1;
                     }
                 }

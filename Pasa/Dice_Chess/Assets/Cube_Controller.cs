@@ -11,6 +11,7 @@ public class Game_Status : MonoBehaviour
 {
     public static bool Turn = false;
     public static bool OnTrigger_Check = false;
+    public static bool Kill = false;
 }
 
 // ---------------------------------------------------------------
@@ -67,6 +68,9 @@ public class Define : MonoBehaviour
     public const int R_08 = 19;
     public const int R_09 = 20;
     public const int R_10 = 21;
+    public static Vector3[] Location_odd =  new Vector3 [17];
+    public static Vector3[] Location_even =  new Vector3 [18];
+
 
 }
 // ---------------------------------------------------------------
@@ -96,6 +100,7 @@ public class Cube_Status : MonoBehaviour
     public static bool Status_R_08 = false;
     public static bool Status_R_09 = false;
     public static bool Status_R_10 = false;
+    public static bool[] OddEven_Cube = new bool[22];
 }
 
 // ---------------------------------------------------------------
@@ -135,6 +140,7 @@ public class Cube_Controller : MonoBehaviour
     GameObject Game_Turn;
     GameObject Dice_Count;
     GameObject Advice;
+    GameObject Sound_001;
 
 　　　　// ---------------------------------------------------------------
 　　　　// - Start　初期化処理
@@ -178,6 +184,88 @@ public class Cube_Controller : MonoBehaviour
       this.DICE_B02.GetComponent<Text>().text = Dice_Status.B_DICE_02.ToString();
       this.DICE_R01.GetComponent<Text>().text = Dice_Status.R_DICE_01.ToString();
       this.DICE_R02.GetComponent<Text>().text = Dice_Status.R_DICE_02.ToString();
+      // 音源1
+      this.Sound_001 = GameObject.Find("Turn_Change");
+
+      // 奇数偶数の初期化
+      Define.Location_odd[0] = new Vector3(-3, 0, 1);
+      Define.Location_odd[1] = new Vector3(-3, 0, -1);
+      Define.Location_odd[2] = new Vector3(-2, 0, 2);
+      Define.Location_odd[3] = new Vector3(-2, 0, 0);
+      Define.Location_odd[4] = new Vector3(-2, 0, -2);
+      Define.Location_odd[5] = new Vector3(-1, 0, 1);
+      Define.Location_odd[6] = new Vector3(-1, 0, -1);
+      Define.Location_odd[7] = new Vector3(0, 0, 2);
+      Define.Location_odd[8] = new Vector3(0, 0, 0);
+      Define.Location_odd[9] = new Vector3(0, 0, -2);
+      Define.Location_odd[10] = new Vector3(1, 0, 1);
+      Define.Location_odd[11] = new Vector3(1, 0, -1);
+      Define.Location_odd[12] = new Vector3(2, 0, 2);
+      Define.Location_odd[13] = new Vector3(2, 0, 0);
+      Define.Location_odd[14] = new Vector3(2, 0, -2);
+      Define.Location_odd[15] = new Vector3(3, 0, 1);
+      Define.Location_odd[16] = new Vector3(3, 0, -1);
+
+      Define.Location_even[0] = new Vector3(-3, 0, 2);
+      Define.Location_even[1] = new Vector3(-3, 0, 0);
+      Define.Location_even[2] = new Vector3(-3, 0, -2);
+      Define.Location_even[3] = new Vector3(-2, 0, 1);
+      Define.Location_even[4] = new Vector3(-2, 0, -1);
+      Define.Location_even[5] = new Vector3(-1, 0, 2);
+      Define.Location_even[6] = new Vector3(-1, 0, 0);
+      Define.Location_even[7] = new Vector3(-1, 0, -2);
+      Define.Location_even[8] = new Vector3(0, 0, 1);
+      Define.Location_even[9] = new Vector3(0, 0, -1);
+      Define.Location_even[10] = new Vector3(1, 0, 2);
+      Define.Location_even[11] = new Vector3(1, 0, 0);
+      Define.Location_even[12] = new Vector3(1, 0, -2);
+      Define.Location_even[13] = new Vector3(2, 0, 1);
+      Define.Location_even[14] = new Vector3(2, 0, -1);
+      Define.Location_even[15] = new Vector3(3, 0, 2);
+      Define.Location_even[16] = new Vector3(3, 0, 0);
+      Define.Location_even[17] = new Vector3(3, 0, -2);
+    }
+
+
+    public void Odd_check()
+    {
+      int i;
+      int j;
+      for (i = 0; i < 22; i++)
+      {
+        for (j = 0; j < 17; j++)
+        {
+          if (Cube_Location.Cube_Loc[i] == Define.Location_odd[j])
+          {
+            Cube_Status.OddEven_Cube[i] = true;
+          }
+        }
+      }
+    }
+
+    public void Even_Check()
+    {
+      int i;
+      int j;
+      for (i = 0; i < 22; i++)
+      {
+        for (j = 0; j < 18; j++)
+        {
+          if (Cube_Location.Cube_Loc[i] == Define.Location_even[j])
+          {
+            Cube_Status.OddEven_Cube[i] = true;
+          }
+        }
+      }
+    }
+
+    public void OddEven_Cube_Enable()
+    {
+      int i;
+      for (i = 0; i < 22; i++)
+      {
+        Cube_Status.OddEven_Cube[i] = true;
+      }
     }
 
 　　　　// ---------------------------------------------------------------
@@ -193,14 +281,17 @@ public class Cube_Controller : MonoBehaviour
       if(Dice_Status.B_DICE_01 == 1)
       {
         this.Advice.GetComponent<Text>().text ="どのマスの駒でも移動可能だよ！";
+        OddEven_Cube_Enable();
       }
       else if(Dice_Status.B_DICE_01 % 2 ==1)
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に白マスの駒が移動可能だよ！";
+        Odd_check();
       }
       else
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に黒マスの駒が移動可能だよ！";
+        Even_Check();
       }
     }
 
@@ -214,14 +305,17 @@ public class Cube_Controller : MonoBehaviour
       if(Dice_Status.B_DICE_02 == 1)
       {
         this.Advice.GetComponent<Text>().text ="どのマスの駒でも移動可能だよ！";
+        OddEven_Cube_Enable();
       }
       else if(Dice_Status.B_DICE_02 % 2 ==1)
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に白マスの駒が移動可能だよ！";
+        Odd_check();
       }
       else
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に黒マスの駒が移動可能だよ！";
+        Even_Check();
       }
     }
 
@@ -235,14 +329,17 @@ public class Cube_Controller : MonoBehaviour
       if(Dice_Status.R_DICE_01 == 1)
       {
         this.Advice.GetComponent<Text>().text ="どのマスの駒でも移動可能だよ！";
+        OddEven_Cube_Enable();
       }
       else if(Dice_Status.R_DICE_01 % 2 ==1)
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に白マスの駒が移動可能だよ！";
+        Odd_check();
       }
       else
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に黒マスの駒が移動可能だよ！";
+        Even_Check();
       }
     }
 
@@ -256,14 +353,17 @@ public class Cube_Controller : MonoBehaviour
       if(Dice_Status.R_DICE_02 == 1)
       {
         this.Advice.GetComponent<Text>().text ="どのマスの駒でも移動可能だよ！";
+        OddEven_Cube_Enable();
       }
       else if(Dice_Status.R_DICE_02 % 2 ==1)
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に白マスの駒が移動可能だよ！";
+        Odd_check();
       }
       else
       {
         this.Advice.GetComponent<Text>().text ="ターン開始時に黒マスの駒が移動可能だよ！";
+        Even_Check();
       }
     }
 
@@ -308,7 +408,10 @@ public class Cube_Controller : MonoBehaviour
 
     public void Roll_Dice_End()
     {
+      this.Sound_001.GetComponent<AudioSource>().Play();
+      
       DeInit_All_Cube();
+
       this.Advice.GetComponent<Text>().text ="使用する出目を決めてね！";
       if (Dice_Status.Used_Dice == Define.DICE_B01)
       {
@@ -428,6 +531,7 @@ public class Cube_Controller : MonoBehaviour
 
     public void DeInit_All_Cube()
     {
+　　　　　Game_Status.Kill = false;
       Cube_Status.Status_B_00 = false;
       Cube_Status.Status_B_01 = false;
       Cube_Status.Status_B_02 = false;
@@ -542,6 +646,11 @@ public class Cube_Controller : MonoBehaviour
         this.CUBE_R10.GetComponent<ParticleSystem>().Stop();
       }
  
+      int i;
+      for (i = 0; i < 22; i++)
+      {
+        Cube_Status.OddEven_Cube[i] = false;
+      }
 
    }
 
@@ -658,7 +767,16 @@ public class Cube_Controller : MonoBehaviour
     //----------------------------------------------------------------------
     public void OnClick_B_00()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B00.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_00] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_00] == true))
         {
             Cube_Status.Status_B_00 = true;
             GetComponent<ParticleSystem>().Play();
@@ -671,7 +789,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_01()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B01.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_01] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_01] == true))
         {
             Cube_Status.Status_B_01 = true;
             GetComponent<ParticleSystem>().Play();
@@ -684,7 +811,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_02()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B02.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_02] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_02] == true))
         {
             Cube_Status.Status_B_02 = true;
             GetComponent<ParticleSystem>().Play();
@@ -697,7 +833,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_03()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B03.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_03] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_03] == true))
         {
             Cube_Status.Status_B_03 = true;
             GetComponent<ParticleSystem>().Play();
@@ -710,7 +855,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_04()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B04.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_04] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_04] == true))
         {
             Cube_Status.Status_B_04 = true;
             GetComponent<ParticleSystem>().Play();
@@ -723,7 +877,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_05()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B05.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_05] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_05] == true))
         {
             Cube_Status.Status_B_05 = true;
             GetComponent<ParticleSystem>().Play();
@@ -736,7 +899,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_06()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B06.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_06] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_06] == true))
         {
             Cube_Status.Status_B_06 = true;
             GetComponent<ParticleSystem>().Play();
@@ -749,7 +921,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_07()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B07.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_07] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_07] == true))
         {
             Cube_Status.Status_B_07 = true;
             GetComponent<ParticleSystem>().Play();
@@ -762,7 +943,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_08()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B08.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_08] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_08] == true))
         {
             Cube_Status.Status_B_08 = true;
             GetComponent<ParticleSystem>().Play();
@@ -775,7 +965,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_09()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B09.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_09] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_09] == true))
         {
             Cube_Status.Status_B_09 = true;
             GetComponent<ParticleSystem>().Play();
@@ -788,7 +987,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_B_10()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn))
+        if (this.CUBE_B10.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.B_10] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_10] == true))
         {
             Cube_Status.Status_B_10 = true;
             GetComponent<ParticleSystem>().Play();
@@ -805,7 +1012,16 @@ public class Cube_Controller : MonoBehaviour
     //----------------------------------------------------------------------
     public void OnClick_R_00()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R00.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_00] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_00] == true))
         {
             Cube_Status.Status_R_00 = true;
             GetComponent<ParticleSystem>().Play();
@@ -818,7 +1034,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_01()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R01.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_01] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_01] == true))
         {
             Cube_Status.Status_R_01 = true;
             GetComponent<ParticleSystem>().Play();
@@ -831,7 +1056,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_02()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R02.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_02] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_02] == true))
         {
             Cube_Status.Status_R_02 = true;
             GetComponent<ParticleSystem>().Play();
@@ -844,7 +1078,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_03()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R03.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_03] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_03] == true))
         {
             Cube_Status.Status_R_03 = true;
             GetComponent<ParticleSystem>().Play();
@@ -857,7 +1100,16 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_04()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R04.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_04] = true;
+        }
+        else
+        {
+          // No action
+        }
+
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_04] == true))
         {
             Cube_Status.Status_R_04 = true;
             GetComponent<ParticleSystem>().Play();
@@ -870,7 +1122,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_05()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R05.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_05] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_05] == true))
         {
             Cube_Status.Status_R_05 = true;
             GetComponent<ParticleSystem>().Play();
@@ -883,7 +1143,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_06()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R06.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_06] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_06] == true))
         {
             Cube_Status.Status_R_06 = true;
             GetComponent<ParticleSystem>().Play();
@@ -896,7 +1164,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_07()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R07.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_07] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_07] == true))
         {
             Cube_Status.Status_R_07 = true;
             GetComponent<ParticleSystem>().Play();
@@ -909,7 +1185,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_08()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R08.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_08] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_08] == true))
         {
             Cube_Status.Status_R_08 = true;
             GetComponent<ParticleSystem>().Play();
@@ -922,7 +1206,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_09()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R09.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_09] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_09] == true))
         {
             Cube_Status.Status_R_09 = true;
             GetComponent<ParticleSystem>().Play();
@@ -935,7 +1227,15 @@ public class Cube_Controller : MonoBehaviour
     }
     public void OnClick_R_10()
     {
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn))
+        if (this.CUBE_R10.transform.localScale.y >= 0.5f)
+        {
+          Cube_Status.OddEven_Cube[Define.R_10] = true;
+        }
+        else
+        {
+          // No action
+        }
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_10] == true))
         {
             Cube_Status.Status_R_10 = true;
             GetComponent<ParticleSystem>().Play();
