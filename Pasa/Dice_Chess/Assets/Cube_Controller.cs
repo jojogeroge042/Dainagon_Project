@@ -101,6 +101,7 @@ public class Cube_Status : MonoBehaviour
     public static bool Status_R_09 = false;
     public static bool Status_R_10 = false;
     public static bool[] OddEven_Cube = new bool[22];
+    public static bool[] Double_Cube = new bool[22];
 }
 
 // ---------------------------------------------------------------
@@ -652,6 +653,10 @@ public class Cube_Controller : MonoBehaviour
         Cube_Status.OddEven_Cube[i] = false;
       }
 
+      for (i = 0; i < 22; i++)
+      {
+        Cube_Status.Double_Cube[i] = false;
+      }
    }
 
 
@@ -776,7 +781,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_00] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_00] == true) && (Cube_Status.Double_Cube[Define.B_00] == false))
         {
             Cube_Status.Status_B_00 = true;
             GetComponent<ParticleSystem>().Play();
@@ -798,7 +803,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_01] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_01] == true) && (Cube_Status.Double_Cube[Define.B_01] == false))
         {
             Cube_Status.Status_B_01 = true;
             GetComponent<ParticleSystem>().Play();
@@ -820,7 +825,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_02] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_02] == true) && (Cube_Status.Double_Cube[Define.B_02] == false))
         {
             Cube_Status.Status_B_02 = true;
             GetComponent<ParticleSystem>().Play();
@@ -842,7 +847,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_03] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_03] == true) && (Cube_Status.Double_Cube[Define.B_03] == false))
         {
             Cube_Status.Status_B_03 = true;
             GetComponent<ParticleSystem>().Play();
@@ -864,7 +869,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_04] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_04] == true)&&(Cube_Status.Double_Cube[Define.B_04] == false))
         {
             Cube_Status.Status_B_04 = true;
             GetComponent<ParticleSystem>().Play();
@@ -886,7 +891,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_05] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_05] == true) && (Cube_Status.Double_Cube[Define.B_05] == false))
         {
             Cube_Status.Status_B_05 = true;
             GetComponent<ParticleSystem>().Play();
@@ -901,14 +906,14 @@ public class Cube_Controller : MonoBehaviour
     {
         if (this.CUBE_B06.transform.localScale.y >= 0.5f)
         {
-          Cube_Status.OddEven_Cube[Define.B_06] = true;
+            Cube_Status.OddEven_Cube[Define.B_06] = true;
         }
         else
         {
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_06] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_06] == true) && (Cube_Status.Double_Cube[Define.B_06] == false))
         {
             Cube_Status.Status_B_06 = true;
             GetComponent<ParticleSystem>().Play();
@@ -930,7 +935,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_07] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_07] == true)&&(Cube_Status.Double_Cube[Define.B_07] == false))
         {
             Cube_Status.Status_B_07 = true;
             GetComponent<ParticleSystem>().Play();
@@ -952,7 +957,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_08] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_08] == true)&&(Cube_Status.Double_Cube[Define.B_08] == false))
         {
             Cube_Status.Status_B_08 = true;
             GetComponent<ParticleSystem>().Play();
@@ -974,7 +979,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_09] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_09] == true)&&(Cube_Status.Double_Cube[Define.B_09] == false))
         {
             Cube_Status.Status_B_09 = true;
             GetComponent<ParticleSystem>().Play();
@@ -995,7 +1000,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_10] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Blue_Turn) && (Cube_Status.OddEven_Cube[Define.B_10] == true)&&(Cube_Status.Double_Cube[Define.B_10] == false))
         {
             Cube_Status.Status_B_10 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1021,7 +1026,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_00] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_00] == true)&&(Cube_Status.Double_Cube[Define.R_00] == false))
         {
             Cube_Status.Status_R_00 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1043,7 +1048,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_01] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_01] == true)&&(Cube_Status.Double_Cube[Define.R_01] == false))
         {
             Cube_Status.Status_R_01 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1065,7 +1070,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_02] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_02] == true)&&(Cube_Status.Double_Cube[Define.R_02] == false))
         {
             Cube_Status.Status_R_02 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1087,7 +1092,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_03] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_03] == true)&&(Cube_Status.Double_Cube[Define.R_03] == false))
         {
             Cube_Status.Status_R_03 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1109,7 +1114,7 @@ public class Cube_Controller : MonoBehaviour
           // No action
         }
 
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_04] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_04] == true)&&(Cube_Status.Double_Cube[Define.R_04] == false))
         {
             Cube_Status.Status_R_04 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1130,7 +1135,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_05] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_05] == true)&&(Cube_Status.Double_Cube[Define.R_05] == false))
         {
             Cube_Status.Status_R_05 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1151,7 +1156,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_06] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_06] == true)&&(Cube_Status.Double_Cube[Define.R_06] == false))
         {
             Cube_Status.Status_R_06 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1172,7 +1177,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_07] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_07] == true)&&(Cube_Status.Double_Cube[Define.R_07] == false))
         {
             Cube_Status.Status_R_07 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1193,7 +1198,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_08] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_08] == true)&&(Cube_Status.Double_Cube[Define.R_08] == false))
         {
             Cube_Status.Status_R_08 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1214,7 +1219,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_09] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_09] == true)&&(Cube_Status.Double_Cube[Define.R_09] == false))
         {
             Cube_Status.Status_R_09 = true;
             GetComponent<ParticleSystem>().Play();
@@ -1235,7 +1240,7 @@ public class Cube_Controller : MonoBehaviour
         {
           // No action
         }
-        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_10] == true))
+        if ((true == Check_Status()) && (Game_Status.Turn == Define.Red_Turn) && (Cube_Status.OddEven_Cube[Define.R_10] == true)&&(Cube_Status.Double_Cube[Define.R_10] == false))
         {
             Cube_Status.Status_R_10 = true;
             GetComponent<ParticleSystem>().Play();

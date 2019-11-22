@@ -132,6 +132,8 @@ public class B_00_BU : MonoBehaviour
                     Cube_Status.Status_B_00 = false;
                     // 奇数偶数ステータスをfalseにする
                     Cube_Status.OddEven_Cube[Define.B_00] = false;
+                    // doubleステータスをtrueにする
+                    Cube_Status.Double_Cube[Define.B_00] = true;
                     // エフェクトを切る
                     GetComponent<ParticleSystem>().Stop();
                 }
