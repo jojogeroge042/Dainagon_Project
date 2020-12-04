@@ -1,0 +1,7 @@
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\bin\Debug\20200408.exe.config
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\bin\Debug\20200408.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\bin\Debug\20200408.pdb
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\obj\Debug\20200408.csprojAssemblyReference.cache
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\obj\Debug\20200408.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\obj\Debug\20200408.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200408\20200408\obj\Debug\20200408.pdb

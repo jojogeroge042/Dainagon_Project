@@ -1,0 +1,6 @@
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\obj\Debug\Kadai.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\bin\Debug\Kadai.exe.config
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\bin\Debug\Kadai.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\bin\Debug\Kadai.pdb
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\obj\Debug\Kadai.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\obj\Debug\Kadai.pdb

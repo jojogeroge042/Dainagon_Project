@@ -1,0 +1,7 @@
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\obj\Debug\Text02.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\bin\Debug\Text02.exe.config
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\bin\Debug\Text02.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\bin\Debug\Text02.pdb
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\obj\Debug\Text02.exe
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\obj\Debug\Text02.pdb
+C:\Users\Owner\Documents\Study_C_sharp\20200410\Text02\Text02\obj\Debug\Text02.csprojAssemblyReference.cache

@@ -1,0 +1,3 @@
+﻿1>------ ビルド開始: プロジェクト: Kadai, 構成: Debug Any CPU ------
+1>  Kadai -> C:\Users\Owner\Documents\Study_C_sharp\20200426\Kadai\Kadai\bin\Debug\Kadai.exe
+========== ビルド: 1 正常終了、0 失敗、0 更新不要、0 スキップ ==========
